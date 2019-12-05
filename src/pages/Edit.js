@@ -5,10 +5,24 @@ import { Context as BlogContext } from "../context/BlogContext";
 
 const Edit = ({ navigation }) => {
   const id = navigation.getParam("id");
+  const { state } = useContext(BlogContext);
+
+  const blogPost = state.find(blogPost => blogPost.id === id);
+
+  const [title, setTitle] = useState(blogPost.title);
+  const [content, setContent] = useState(blogPost.content);
 
   return (
     <View>
-      <Text>Edit Screen - {id} </Text>
+      <Text style={styles.label}>Edit Title:</Text>
+      <TextInput value={title} onChangeText={setTitle} style={styles.input} />
+
+      <Text style={styles.label}>Edit Content:</Text>
+      <TextInput
+        value={content}
+        onChangeText={setContent}
+        style={styles.input}
+      />
     </View>
   );
 };
