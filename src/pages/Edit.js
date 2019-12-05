@@ -6,16 +6,14 @@ import BlogPostForm from "../components/BlogPostForm";
 
 const Edit = ({ navigation }) => {
   const id = navigation.getParam("id");
-  const { state } = useContext(BlogContext);
+  const { state, editBlogPost } = useContext(BlogContext);
 
   const blogPost = state.find(blogPost => blogPost.id === id);
 
   return (
     <BlogPostForm
       initialValues={{ title: blogPost.title, content: blogPost.content }}
-      onSubmit={(title, content) => {
-        console.log(title, content);
-      }}
+      onSubmit={(title, content) => editBlogPost(id, title, content)}
     />
   );
 };
