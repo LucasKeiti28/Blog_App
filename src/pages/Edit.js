@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet } from "react-native";
 
 import { Context as BlogContext } from "../context/BlogContext";
+import BlogPostForm from "../components/BlogPostForm";
 
 const Edit = ({ navigation }) => {
   const id = navigation.getParam("id");
@@ -9,22 +10,7 @@ const Edit = ({ navigation }) => {
 
   const blogPost = state.find(blogPost => blogPost.id === id);
 
-  const [title, setTitle] = useState(blogPost.title);
-  const [content, setContent] = useState(blogPost.content);
-
-  return (
-    <View>
-      <Text style={styles.label}>Edit Title:</Text>
-      <TextInput value={title} onChangeText={setTitle} style={styles.input} />
-
-      <Text style={styles.label}>Edit Content:</Text>
-      <TextInput
-        value={content}
-        onChangeText={setContent}
-        style={styles.input}
-      />
-    </View>
-  );
+  return <BlogPostForm />;
 };
 
 export default Edit;
