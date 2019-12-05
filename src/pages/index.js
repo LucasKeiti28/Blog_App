@@ -1,20 +1,37 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, FlatList, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Button,
+  TouchableOpacity
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
 
-import BlogContext from "../context/BlogContext";
+import { Context as BlogContext } from "../context/BlogContext";
 
-const Index = () => {
-  const { data, addBlogPosts } = useContext(BlogContext);
+const Index = ({ navigation }) => {
+  const { state, addBlogPosts, deleteBlogPost } = useContext(BlogContext);
 
   return (
     <View>
-      <Text>Index</Text>
-      <Button title="Add Post" onPress={addBlogPosts} />
       <FlatList
-        data={data}
+        data={state}
         keyExtractor={blogPost => blogPost.title}
         renderItem={({ item }) => {
-          return <Text>{item.title}</Text>;
+          return (
+            <View style={styles.row}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Show", { id: item.id })}
+              >
+                <Text style={styles.title}>{item.title} </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
+                <Feather name="trash-2" style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+          );
         }}
       />
     </View>
@@ -23,4 +40,29 @@ const Index = () => {
 
 export default Index;
 
-const styles = StyleSheet.create({});
+Index.navigationOptions = ({ navigation }) => {
+  return {
+    headerRight: (
+      <TouchableOpacity onPress={() => navigation.navigate("Create")}>
+        <Feather name="plus" size={30} style={{ marginRight: 15 }} />
+      </TouchableOpacity>
+    )
+  };
+};
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#bbb"
+  },
+  title: {
+    fontSize: 18
+  },
+  icon: {
+    fontSize: 24
+  }
+});

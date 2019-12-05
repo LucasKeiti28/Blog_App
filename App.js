@@ -3,11 +3,18 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
 import Index from "./src/pages/index";
-import { BlogProvider } from "./src/context/BlogContext";
+import Show from "./src/pages/Show";
+import Create from "./src/pages/Create";
+import Edit from "./src/pages/Edit";
+
+import { Provider as BlogProvider } from "./src/context/BlogContext";
 
 const navigator = createStackNavigator(
   {
-    Index
+    Index,
+    Show,
+    Create,
+    Edit
   },
   {
     initialRouteName: "Index",
