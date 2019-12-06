@@ -1,5 +1,6 @@
 import createDataContext from "./createDataContext";
 import jsonServe from "../api/jsonServer";
+import jsonServer from "../api/jsonServer";
 
 const blogReducer = (state, action) => {
   switch (action.type) {
@@ -15,15 +16,15 @@ const blogReducer = (state, action) => {
       });
     case "DELETE_BLOG_POST":
       return state.filter(blogPost => blogPost.id !== action.payload);
-    case "ADD_BLOG_POST":
-      return [
-        ...state,
-        {
-          id: Math.floor(Math.random() * 99999),
-          title: action.payload.title,
-          content: action.payload.content
-        }
-      ];
+    // case "ADD_BLOG_POST":
+    //   return [
+    //     ...state,
+    //     {
+    //       id: Math.floor(Math.random() * 99999),
+    //       title: action.payload.title,
+    //       content: action.payload.content
+    //     }
+    //   ];
     default:
       return state;
   }
@@ -38,8 +39,13 @@ const getBlogPosts = dispatch => {
 };
 
 const addBlogPosts = dispatch => {
-  return (title, content, callback) => {
-    dispatch({ type: "ADD_BLOG_POST", payload: { title, content } });
+  return async (title, content, callback) => {
+    await jsonServer.post("/blogposts", {
+      title,
+      content
+    });
+
+    // dispatch({ type: "ADD_BLOG_POST", payload: { title, content } });
     if (callback) {
       callback();
     }
@@ -47,13 +53,15 @@ const addBlogPosts = dispatch => {
 };
 
 const deleteBlogPost = dispatch => {
-  return id => {
+  return async id => {
+    await jsonServe.delete(`/blogposts/${id}`);
     dispatch({ type: "DELETE_BLOG_POST", payload: id });
   };
 };
 
 const editBlogPost = dispatch => {
-  return (id, title, content, callback) => {
+  return async (id, title, content, callback) => {
+    await jsonServer.put(`/blogposts/${id}`, { title, content });
     dispatch({ type: "EDIT_BLOG_POST", payload: { id, title, content } });
     if (callback) {
       callback();
